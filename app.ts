@@ -27,6 +27,7 @@ router.get("/", (ctx) => {
   ctx.render("./index.ejs", { data: { name: "abc" ,tytul:"index"} });
 });
 router.get("/projekty", async (ctx) => {
+  console.log(await Projekt.all())
   ctx.render("./projekty.ejs", { data: { name: "projekty" ,tytul:"projekty"},projekt:await Projekt.all(),rodzaj: await Rodzaj.all(),status: await Status.all() });
 });
 router.get("/rodzaje", async (ctx) => {
@@ -83,7 +84,15 @@ router.post('/projektpost', async context => {
   
   console.log(data)
   if (typeof  data.fields['id_projekt'] ==='undefined' ) {
-    await Projekt.create({nazwa_status:data.fields['nazwa_status']},)
+    await Projekt.create({
+      nazwa_status:data.fields['nr_projekt'],
+      temat_projekt:data.fields['temat_projekt'],
+      data_rozpoczecia:data.fields['data_rozpoczecia'],
+      data_zakonczenia:data.fields['data_zakonczenia'],
+      kwota:data.fields['kwota'],
+      uwagi:data.fields['uwagi'],
+      status_id_status:data.fields['status'],
+      rodzaj_id_rodzaj:data.fields['rodzaj']})
     console.log(data)
     console.log("dodajemy"+data.fields['nr_projekt'])
   }else if (typeof data.fields['zapisz'] != 'undefined' ) {

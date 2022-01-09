@@ -25,22 +25,24 @@
       <input type="submit" name="zapisz" type="button" class="btn btn-success" value="Zapisz zmiane wiersza">
       <input type="submit" name="usun" type="button" class="btn btn-danger" value="Usuń wiersz">
                 
-      <input type="hidden" name="id_projekt" value="%= projekt[i].id_projekt %>">
+      <input type="hidden" name="id_projekt" value="<%= projekt[i].idprojekt %>">
               </th>
               <td ><input class="form-control"  type="text" name="nr_projekt" value="<%= projekt[i].nr_projekt %>" required> </td>
               <td ><input class="form-control"  type="text" name="temat_projekt" value="<%= projekt[i].temat_projekt %>" required> </td>
               <td ><input class="form-control"  type="date" name="data_rozpoczecia" value="<%= projekt[i].data_rozpoczecia.toISOString().slice(0, 10) %>" required> </td>
               <td ><input class="form-control"  type="date" name="data_zakonczenia" value="<% if(projekt[i].data_zakonczenia != null){ %><%=  projekt[i].data_zakonczenia.toISOString().slice(0, 10) %><% }  %>" > </td>
-              <td ><input class="form-control"  type="number" name="kwota" value="<%= projekt[i].kwota %>" required> </td>
+              <td ><input class="form-control"  type="number" name="kwota"step="0.01" min="0.01" value="<%= projekt[i].kwota %>" required> </td>
               <td ><input class="form-control"  type="text" name="uwagi" value="<%= projekt[i].uwagi %>" placeholder="Brak"> </td>
               <td ><select name="rodzaj" class="form-select">
                 <% for(let r=0; r<rodzaj.length; r++) {%>
-                <option value="<%= rodzaj[r].id_rodzaj %>"><%= rodzaj[r].nazwa_rodzaj %></option>
+                <option <% if (rodzaj[r].id_rodzaj==projekt[i].rodzajIdRodzaj) { %> selected <% } %>
+                value="<%= rodzaj[r].id_rodzaj %>"><%= rodzaj[r].nazwa_rodzaj %></option>
                 <% } %>
               </select>  </td>
               <td ><select name="status" class="form-select">
                 <% for(let r=0; r<status.length; r++) {%>
-                <option value="<%= status[r].id_status %>"><%= status[r].nazwa_status %></option>
+                <option <% if (status[r].id_status==projekt[i].statusIdStatus) { %> selected <% } %>
+                    value="<%= status[r].id_status %>"><%= status[r].nazwa_status %></option>
                 <% } %>
               </select>  </td>
             </tr>
@@ -55,16 +57,20 @@
             <td ><input class="form-control"  type="text" name="temat_projekt"required> </td>
             <td ><input class="form-control"  type="date" name="data_rozpoczecia" required> </td>
             <td ><input class="form-control"  type="date" name="data_zakonczenia" > </td>
-            <td ><input class="form-control"  type="number" name="kwota" required> </td>
+            <td ><input class="form-control"  type="number" step="0.01" min="0.01" name="kwota" required> </td>
             <td ><input class="form-control"  type="text" name="uwagi" > </td></form> 
-            <td ><select name="rodzaj" class="form-select">
+            <td ><select name="rodzaj" class="form-select" required > 
+              
+              <option value="" selected disabled hidden>wybierz</option>
               <% for(let r=0; r<rodzaj.length; r++) {%>
               <option value="<%= rodzaj[r].id_rodzaj %>"><%= rodzaj[r].nazwa_rodzaj %></option>
               <% } %>
             </select>  </td>
-            <td ><select name="status" class="form-select">
+            <td ><select name="status" class="form-select"  required  >
+              <option value="" selected disabled hidden>wybierz</option>
               <% for(let r=0; r<status.length; r++) {%>
-              <option value="<%= status[r].id_status %>"><%= status[r].nazwa_status %></option>
+                
+              <option   value="<%= status[r].id_status %>"><%=status[r].nazwa_status %></option>
               <% } %>
             </select>  </td>
           </tr>
