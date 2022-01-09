@@ -2,7 +2,7 @@ import {Model ,DataTypes} from 'https://deno.land/x/denodb/mod.ts';
 class Rodzaj extends Model {
     static table = 'rodzaj';
   
-    static timestamps = true;
+    static timestamps = false;
   
     static fields = {
         id_rodzaj: {
@@ -10,8 +10,9 @@ class Rodzaj extends Model {
         autoIncrement: true,
       },
       nazwa_rodzaj: DataTypes.STRING,
-      
     };
+    id_rodzaj!:number
+    nazwa_rodzaj!:string;
     static projekt(){
       return this.hasMany(Projekt)
     }
@@ -19,7 +20,7 @@ class Rodzaj extends Model {
   class Status extends Model {
     static table = 'status';
   
-    static timestamps = true;
+    static timestamps = false;
   
     static fields = {
         id_status: {
@@ -36,7 +37,7 @@ class Rodzaj extends Model {
   class Projekt extends Model {
     static table = 'projekt';
   
-    static timestamps = true;
+    static timestamps = false;
   
     static fields = {
       idprojekt: {

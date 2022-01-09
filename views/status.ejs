@@ -1,0 +1,44 @@
+<%- include('./heder.ejs',{title:data.tytul}); -%>
+<body>
+      
+
+        <table class="table thead-dark table-striped table-dark">
+        <thead>
+          <tr >
+            <th scope="col" style="width: 350px"></th>
+            <th scope="col">nazwa statusu projektu</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% for(var i=0; i<status.length; i++) {%>
+            <tr >
+              <th scope="row">
+                <form  action="/statuspost" method="post" enctype="multipart/form-data">   
+      <input type="submit" name="zapisz" type="button" class="btn btn-success" value="Zapisz zmiane wiersza">
+      <input type="submit" name="usun" type="button" class="btn btn-danger" value="Usuń wiersz">
+                
+      <input type="hidden" name="id_status" value="<%= status[i].id_status %>">
+              </th>
+              <td ><input class="form-control"  type="text" name="nazwa_status" value="<%= status[i].nazwa_status %>"> </td>
+            </tr>
+          </form> 
+          <% } %>
+          <tr >
+            <th scope="row">
+        <form  action="/statuspost" method="post" enctype="multipart/form-data">     
+    <input type="submit" name="dodaj" class="btn btn-success" value="Dodaj"></button>
+            </th>
+            <td ><input name="nazwa_status" class="form-control"  type="text" value="" placeholder="Wpisz status" required> </td>
+          </form> 
+          </tr>
+          
+        </tbody>
+      </table>
+
+
+
+
+
+    </body>
+
+    <%- include('./footer.ejs'); -%>
