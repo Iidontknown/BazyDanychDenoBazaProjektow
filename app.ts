@@ -1,5 +1,5 @@
 import { Database } from 'https://deno.land/x/denodb/mod.ts';
-import { Rodzaj, Status, Projekt } from './model.ts'
+import { Rodzaj, Status, Projekt,Stawszproj,Statstykiprojektrodzaj } from './model.ts'
 import { connector } from './connector.ts'
 import {
   viewEngine,
@@ -16,6 +16,8 @@ const db = new Database(connector);
 db.link([Rodzaj]);
 db.link([Status]);
 db.link([Projekt]);
+db.link([Stawszproj]);
+db.link([Statstykiprojektrodzaj]);
 await db.sync({ drop: false });
 
 app.use(viewEngine(oakAdapter, ejsEngine, { viewRoot: "./views" }));
@@ -27,8 +29,48 @@ router.get("/", (ctx) => {
   ctx.render("./index.ejs", { data: { name: "abc", tytul: "index" } });
 });
 router.get("/projekty", async (ctx) => {
-  console.log(await Projekt.all())
-  ctx.render("./projekty.ejs", { data: { name: "projekty", tytul: "projekty" }, projekt: await Projekt.all(), rodzaj: await Rodzaj.all(), status: await Status.all() });
+ 
+  ctx.render("./projekty.ejs", { data: { name: "projekty", tytul: "projekty" }, projekt: await Projekt.all(), rodzaj: await Rodzaj.all(), status: await Status.all() ,rodzajWyb:null,idWyb:null,idWyb1:null});
+});
+router.get("/projekty:r/:id", async (ctx) => {
+  console.log("params:"+ctx?.params?.id) 
+  console.log("params:"+ctx?.params?.r) 
+ let tempProjekt
+ if (ctx?.params?.r =='S' && typeof ctx?.params?.id != 'undefined' ) {
+     tempProjekt =await Projekt.where('status_id_status',ctx?.params?.id).get()
+ctx.render("./projekty.ejs", { data: { name: "projekty", tytul: "projekty" }, projekt: tempProjekt, rodzaj: await Rodzaj.all(), status: await Status.all() ,rodzajWyb:ctx?.params?.r,idWyb:ctx?.params?.id,idWyb1:null});
+
+ }else if(ctx?.params?.r =='R' && typeof ctx?.params?.id != 'undefined'){
+  tempProjekt =await Projekt.where('rodzaj_id_rodzaj',ctx?.params?.id).get()
+ctx.render("./projekty.ejs", { data: { name: "projekty", tytul: "projekty" }, projekt: tempProjekt, rodzaj: await Rodzaj.all(), status: await Status.all() ,rodzajWyb:ctx?.params?.r,idWyb:ctx?.params?.id,idWyb1:null});
+}else if(ctx?.params?.r =='T' && typeof ctx?.params?.id != 'undefined'){
+
+  tempProjekt =await Projekt.where('temat_projekt',ctx?.params?.id).get()
+ctx.render("./projekty.ejs", { data: { name: "projekty", tytul: "projekty" }, projekt: tempProjekt, rodzaj: await Rodzaj.all(), status: await Status.all() ,rodzajWyb:ctx?.params?.r,idWyb:ctx?.params?.id,idWyb1:null});
+}else{
+  ctx.response.redirect('/projekty')
+ }
+ 
+});
+router.get("/projekty:r/:val1/:val2", async (ctx) => {
+  console.log("val1:"+ctx?.params?.val1) 
+  console.log("val2:"+ctx?.params?.val2) 
+  console.log("r:"+ctx?.params?.r) 
+ let tempProjekt
+ 
+ if (ctx?.params?.r =='D' && typeof ctx?.params?.val1 != 'undefined'&& typeof ctx?.params?.val2 != 'undefined' && ctx.params.val2!=null ) {
+  tempProjekt =await Projekt.where('data_rozpoczecia','>=',ctx?.params?.val2).where('data_rozpoczecia','<=',ctx?.params?.val1).get()
+  
+ctx.render("./projekty.ejs", { data: { name: "projekty", tytul: "projekty" }, projekt: tempProjekt, rodzaj: await Rodzaj.all(), status: await Status.all() ,rodzajWyb:ctx?.params?.r,idWyb:ctx?.params?.val1,idWyb1:ctx?.params?.val2});
+
+ }else if (ctx?.params?.r =='K' && typeof ctx?.params?.val1 != 'undefined'&& typeof ctx?.params?.val2 != 'undefined' ) {
+  tempProjekt =await Projekt.where('kwota','<',ctx?.params?.val2).where('kwota','>',ctx?.params?.val1).get()
+ctx.render("./projekty.ejs", { data: { name: "projekty", tytul: "projekty" }, projekt: tempProjekt, rodzaj: await Rodzaj.all(), status: await Status.all() ,rodzajWyb:ctx?.params?.r,idWyb:ctx?.params?.val1,idWyb1:ctx?.params?.val2});
+
+}else{
+  ctx.response.redirect('/projekty')
+ }
+ 
 });
 router.get("/rodzaje", async (ctx) => {
 
@@ -37,6 +79,18 @@ router.get("/rodzaje", async (ctx) => {
 router.get("/status", async (ctx) => {
 
   ctx.render("./status.ejs", { data: { name: "status", tytul: "status" }, status: await Status.all() });
+});
+router.get("/staWszProj", async (ctx) => {
+  const stawszproj=await Stawszproj.all()
+  
+  const tekst = " liczba projektów:"+stawszproj[0].count+" " +" 	kwota minimalna:"+stawszproj[0].min+" 	kwota max:"+stawszproj[0].max+" 	kwota suma:"+stawszproj[0].sum+" "
+  
+  ctx.render("./info.ejs", { data: { name: "statystyki projekty", tytul: "statystyki projekty", abc: tekst, link: "" } });
+});
+router.get("/statstykiprojektrodzaj", async (ctx) => {
+  
+  
+  ctx.render("./statstykiprojektrodzaj.ejs", { data: { name: "statystyki projekty", tytul: "statystyki projekty"}, dane: await Statstykiprojektrodzaj.all(), link: ""  });
 });
 
 

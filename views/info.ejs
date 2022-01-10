@@ -2,8 +2,10 @@
 <body>
       
 <h1><%= data.abc %>  </h1>
+<% if (data.link!="") { %>
+    <a class="btn btn-primary" href="/<%= data.link %> ">Przejdz do <%= data.tytul %> </a>
+<% } %> 
 
-<a class="btn btn-primary"" href="/<%= data.link %> ">Przejdz do <%= data.tytul %> </a>
 
 
 

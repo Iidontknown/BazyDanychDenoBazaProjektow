@@ -1,7 +1,68 @@
 <%- include('./heder.ejs',{title:data.tytul}); -%>
 <body>
-      
+      <div>
+        <select  class="form-select" onchange="if (this.value) window.location.href=this.value">
+          <option value="/projekty" <% if ( rodzajWyb!='S') { %> selected <% } %>>wybierz status do wyszukiwania</option>
+          <% for(let r=0; r<status.length; r++) {%>
+            <option <% if (status[r].id_status==idWyb && rodzajWyb=='S') { %> selected <% } %>
+                value="/projektyS/<%= status[r].id_status %>"><%= status[r].nazwa_status %></option>
+            <% } %>
+        </select>
+        <select class="form-select" onchange="if (this.value) window.location.href=this.value">
+          <option value="/projekty"  <% if ( rodzajWyb!='R') { %> selected <% } %>>wybierz rodzaj do wyszukiwania</option>
+          <% for(let r=0; r<rodzaj.length; r++) {%>
+            <option <% if (rodzaj[r].id_rodzaj==idWyb && rodzajWyb=='R') { %> selected <% } %>
+            value="/projektyR/<%= rodzaj[r].id_rodzaj %>"><%= rodzaj[r].nazwa_rodzaj %></option>
+            <% } %>
+        </select>
+        <hr>
+        <div class=" ">
+          <input type="text" name="searchId" id="searchId" class=""  placeholder="Wpisz szukany temat "  <% if ( rodzajWyb=='T') { %> value="<%= idWyb %>" <% } %>>
+          <label for="searchId" class="sr-only"><button class="btn btn-info " onclick="szukaj()">szukaj projekt po tematcie</button></label> 
+          <script>
+            function szukaj() {
+             if ( document.getElementById('searchId').value==='') {
+              window.location.href = "/projekty"
+             }else{
+              window.location.href = "/projektyT/"+ document.getElementById('searchId').value
+             }
+            }
+            </script>
+        </div>
+        <hr>
+        <div class=" ">
+          <input type="date" name="searchIddate1" id="searchIddate1" class=""   <% if ( rodzajWyb=='D') { %> value="<%= idWyb %>" <% } %>>
+          <input type="date" name="searchIddate1" id="searchIddate2" class=""   <% if ( rodzajWyb=='D') { %> value="<%= idWyb1 %>" <% } %>>
+          <label for="searchId" class="sr-only"><button class="btn btn-info " onclick="szukajData()">szukaj projekt po data rozpoczecia</button></label> 
+          <script>
+            function szukajData() {
+             if ( document.getElementById('searchIddate1').value==='' && document.getElementById('searchIddate1').value==='') {
+              window.location.href = "/projekty"
+             }else{
+              window.location.href = "/projektyD/"+ document.getElementById('searchIddate2').value+"/"+document.getElementById('searchIddate1').value
+             }
+            }
+            </script>
+        </div>
+        <hr>
+        <div class=" ">
+         Od <input type="number" name="searchIdKwota1" id="searchIdKwota1" class=""  step="0.01" min="0.01"<% if ( rodzajWyb=='K') { %> value="<%= idWyb %>" <% } %> >
+          Do <input type="number" name="searchIdKwota2" id="searchIdKwota2" class=""  step="0.01" min="0.01"<% if ( rodzajWyb=='K') { %> value="<%= idWyb1 %>" <% } %>>
+          <label for="searchIdKwota2" class="sr-only"><button class="btn btn-info " onclick="szukajKwota()">szukaj projekt po kwocie</button></label> 
+          <script>
+            function szukajKwota() {
+             if ( document.getElementById('searchIdKwota1').value==='' && document.getElementById('searchIdKwota2').value==='') {
+              window.location.href = "/projekty"
+             }else{
+              window.location.href = "/projektyK/"+ document.getElementById('searchIdKwota1').value+"/"+document.getElementById('searchIdKwota2').value
+             }
+            }
+            </script>
+        </div>
 
+     
+      </div>
+      <hr>
         <table class="table thead-dark table-striped table-dark">
         <thead>
           <tr >
@@ -18,7 +79,8 @@
         </thead>
         <tbody>
           
-          <% for(var i=0; i<projekt.length; i++) {%>
+          <% for(var i=0; i<projekt.length; i++) {  %>
+            <% if ( rodzajWyb=='D') {   } %>
             <tr >
               <th scope="row">
                 <form  action="/projektpost" method="post" enctype="multipart/form-data">   

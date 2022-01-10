@@ -1,22 +1,22 @@
 import {Model ,DataTypes} from 'https://deno.land/x/denodb/mod.ts';
 class Rodzaj extends Model {
-    static table = 'rodzaj';
-  
-    static timestamps = false;
-  
-    static fields = {
-        id_rodzaj: {
-        primaryKey: true,
-        autoIncrement: true,
-      },
-      nazwa_rodzaj: DataTypes.STRING,
-    };
-    id_rodzaj!:number
-    nazwa_rodzaj!:string;
-    static projekt(){
-      return this.hasMany(Projekt)
-    }
+  static table = 'rodzaj';
+
+  static timestamps = false;
+
+  static fields = {
+      id_rodzaj: {
+      primaryKey: true,
+      autoIncrement: true,
+    },
+    nazwa_rodzaj: DataTypes.STRING,
+  };
+  id_rodzaj!:number
+  nazwa_rodzaj!:string;
+  static projekt(){
+    return this.hasMany(Projekt)
   }
+}
   class Status extends Model {
     static table = 'status';
   
@@ -59,4 +59,31 @@ class Rodzaj extends Model {
       return this.hasOne(Status)
     }
   }
-  export{Rodzaj,Status,Projekt}
+  class Stawszproj extends Model {
+    static table = 'stawszproj';
+  
+    static timestamps = false;
+  
+    static fields = {
+      count:DataTypes.decimal(2),
+      min:DataTypes.decimal(2),
+      max:DataTypes.decimal(2),
+      avg:DataTypes.decimal(2),
+      sum:DataTypes.decimal(2),
+      nazwa_rodzaj: DataTypes.STRING,
+    };
+   
+  }
+  class Statstykiprojektrodzaj extends Model {
+    static table = 'statstykiprojektrodzaj';
+  
+    static timestamps = false;
+  
+    static fields = {
+      
+      nazwa_rodzaj: DataTypes.STRING,
+      count:DataTypes.BIG_INTEGER,
+    };
+   
+  }
+  export{Rodzaj,Status,Projekt,Stawszproj,Statstykiprojektrodzaj}

@@ -1,0 +1,61 @@
+<%- include('./heder.ejs',{title:data.tytul}); -%>
+<body>
+      
+
+<div class="chart-container" style="position: relative; height:40vh; width:80vw">
+    <canvas id="myChart"></canvas>
+</div>
+
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+
+  <%
+  let temp=""
+  dane.forEach(element => {
+    if (temp=="") {
+        
+    temp=temp+element.nazwa_rodzaj
+    }else{
+    temp=temp+","+element.nazwa_rodzaj}
+}); 
+let temp2=""
+  dane.forEach(element => {
+    if (temp2=="") {
+        
+    temp2=temp2+element.count
+    }else{
+    temp2=temp2+","+element.count}
+}); 
+    
+%> 
+<div id="mydiv" data-test='<%= temp %>'data-test2='<%= temp2 %>'> 
+    
+</div>
+  <script>
+    const labels =document.getElementById('mydiv').dataset.test.split(",") ;
+
+
+const data = {
+  labels: labels,
+  datasets: [{
+    label: 'projekty graficznie wg rodzaj',
+    backgroundColor: 'rgb(255, 99, 132)',
+    borderColor: 'rgb(255, 99, 132)',
+    data: document.getElementById('mydiv').dataset.test2.split(","),
+  }]
+};
+const config = {
+  type: 'bar',
+  data,
+  options: {}
+};
+
+    
+    var myChart = new Chart(
+      document.getElementById('myChart'),
+      config
+    );
+  </script>
+    </body>
+
+    <%- include('./footer.ejs'); -%>
