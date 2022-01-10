@@ -58,23 +58,21 @@
             <td ><input class="form-control"  type="date" name="data_rozpoczecia" required> </td>
             <td ><input class="form-control"  type="date" name="data_zakonczenia" > </td>
             <td ><input class="form-control"  type="number" step="0.01" min="0.01" name="kwota" required> </td>
-            <td ><input class="form-control"  type="text" name="uwagi" > </td></form> 
-            <td ><select name="rodzaj" class="form-select" required > 
-              
-              <option value="" selected disabled hidden>wybierz</option>
+            <td ><input class="form-control"  type="text" name="uwagi" > </td>
+            <td ><select name="rodzaj" class="form-select">
               <% for(let r=0; r<rodzaj.length; r++) {%>
-              <option value="<%= rodzaj[r].id_rodzaj %>"><%= rodzaj[r].nazwa_rodzaj %></option>
+              <option 
+              value="<%= rodzaj[r].id_rodzaj %>"><%= rodzaj[r].nazwa_rodzaj %></option>
               <% } %>
             </select>  </td>
-            <td ><select name="status" class="form-select"  required  >
-              <option value="" selected disabled hidden>wybierz</option>
+            <td ><select name="status" class="form-select">
               <% for(let r=0; r<status.length; r++) {%>
-                
-              <option   value="<%= status[r].id_status %>"><%=status[r].nazwa_status %></option>
+              <option
+                  value="<%= status[r].id_status %>"><%= status[r].nazwa_status %></option>
               <% } %>
             </select>  </td>
           </tr>
-          
+          </form>
         </tbody>
       </table>
 
