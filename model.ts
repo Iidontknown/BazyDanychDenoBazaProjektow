@@ -80,10 +80,20 @@ class Rodzaj extends Model {
     static timestamps = false;
   
     static fields = {
-      
       nazwa_rodzaj: DataTypes.STRING,
       count:DataTypes.BIG_INTEGER,
     };
    
   }
-  export{Rodzaj,Status,Projekt,Stawszproj,Statstykiprojektrodzaj}
+  class Statstykiprojektstatus extends Model {
+    static table = 'statstykiprojektstatus';
+  
+    static timestamps = false;
+  
+    static fields = {
+      nazwa_status: DataTypes.STRING,
+      count:DataTypes.BIG_INTEGER,
+    };
+   
+  }
+  export{Rodzaj,Status,Projekt,Stawszproj,Statstykiprojektrodzaj,Statstykiprojektstatus}

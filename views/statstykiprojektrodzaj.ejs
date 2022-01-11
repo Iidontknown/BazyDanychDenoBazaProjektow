@@ -1,7 +1,7 @@
 <%- include('./heder.ejs',{title:data.tytul}); -%>
 <body>
       
-
+<h1><%= data.tytul %> </h1>
 <div class="chart-container" style="position: relative; height:40vh; width:80vw">
     <canvas id="myChart"></canvas>
 </div>
@@ -11,13 +11,27 @@
 
   <%
   let temp=""
+  if (typeof dane[0].nazwa_rodzaj  !="undefined") {
+    
+  
   dane.forEach(element => {
-    if (temp=="") {
-        
-    temp=temp+element.nazwa_rodzaj
-    }else{
-    temp=temp+","+element.nazwa_rodzaj}
+    
+    if (temp=="" && typeof element.nazwa_rodzaj !="undefined" ) {
+        temp=temp+element.nazwa_rodzaj
+        }else if(element.nazwa_rodzaj!=""){
+        temp=temp+","+element.nazwa_rodzaj
+      }
 }); 
+}else{
+  dane.forEach(element => {
+    
+    if (temp=="" && typeof element.nazwa_status !="undefined" ) {
+        temp=temp+element.nazwa_status
+        }else if(element.nazwa_status!=""){
+        temp=temp+","+element.nazwa_status
+      }
+});
+}
 let temp2=""
   dane.forEach(element => {
     if (temp2=="") {
@@ -38,7 +52,7 @@ let temp2=""
 const data = {
   labels: labels,
   datasets: [{
-    label: 'projekty graficznie wg rodzaj',
+    label: 'projekty',
     backgroundColor: 'rgb(255, 99, 132)',
     borderColor: 'rgb(255, 99, 132)',
     data: document.getElementById('mydiv').dataset.test2.split(","),

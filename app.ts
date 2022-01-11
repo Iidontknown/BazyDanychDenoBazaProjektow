@@ -1,5 +1,5 @@
 import { Database } from 'https://deno.land/x/denodb/mod.ts';
-import { Rodzaj, Status, Projekt,Stawszproj,Statstykiprojektrodzaj } from './model.ts'
+import { Rodzaj, Status, Projekt,Stawszproj,Statstykiprojektrodzaj,Statstykiprojektstatus} from './model.ts'
 import { connector } from './connector.ts'
 import {
   viewEngine,
@@ -18,6 +18,7 @@ db.link([Status]);
 db.link([Projekt]);
 db.link([Stawszproj]);
 db.link([Statstykiprojektrodzaj]);
+db.link([Statstykiprojektstatus]);
 await db.sync({ drop: false });
 
 app.use(viewEngine(oakAdapter, ejsEngine, { viewRoot: "./views" }));
@@ -90,7 +91,12 @@ router.get("/staWszProj", async (ctx) => {
 router.get("/statstykiprojektrodzaj", async (ctx) => {
   
   
-  ctx.render("./statstykiprojektrodzaj.ejs", { data: { name: "statystyki projekty", tytul: "statystyki projekty"}, dane: await Statstykiprojektrodzaj.all(), link: ""  });
+  ctx.render("./statstykiprojektrodzaj.ejs", { data: { name: "statystyki projekty wg rodzaju", tytul: "statystyki projekty wg rodzaju"}, dane: await Statstykiprojektrodzaj.all(), link: ""  });
+});
+router.get("/statstykiprojektstatus", async (ctx) => {
+  
+  console.log( await Statstykiprojektstatus.all())
+  ctx.render("./statstykiprojektrodzaj.ejs", { data: { name: "statystyki projekty wg status", tytul: "statystyki projekty wg status"}, dane: await Statstykiprojektstatus.all(), link: ""  });
 });
 
 
