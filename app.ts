@@ -1,6 +1,7 @@
 import { Database } from 'https://deno.land/x/denodb/mod.ts';
 import { Rodzaj, Status, Projekt,Stawszproj,Statstykiprojektrodzaj,Statstykiprojektstatus} from './model.ts'
-import { connector } from './connector.ts'
+import {Osoba,Magazyn_sor} from './modelEzor.ts'
+import { connector,connectorEzor } from './connector.ts'
 import {
   viewEngine,
   engineFactory,
@@ -13,18 +14,22 @@ const oakAdapter = adapterFactory.getOakAdapter();
 const app = new Application();
 const router = new Router();
 const db = new Database(connector);
+const dbEzor = new Database(connectorEzor);
 db.link([Rodzaj]);
 db.link([Status]);
 db.link([Projekt]);
 db.link([Stawszproj]);
 db.link([Statstykiprojektrodzaj]);
 db.link([Statstykiprojektstatus]);
+dbEzor.link([Osoba]);
+dbEzor.link([Magazyn_sor]);
 await db.sync({ drop: false });
+await dbEzor.sync({ drop: false });
 
 app.use(viewEngine(oakAdapter, ejsEngine, { viewRoot: "./views" }));
-router.get("/sse", (ctx) => {
+router.get("/help", (ctx) => {
   const target = ctx.sendEvents();
-  target.dispatchMessage({ hello: "world" });
+  target.dispatchMessage({ hello: "Brak danych" });
 });
 router.get("/", (ctx) => {
   ctx.render("./index.ejs", { data: { name: "abc", tytul: "index" } });
@@ -291,6 +296,108 @@ router.post('/projektpost', async ctx => {
   ctx.render("./info.ejs", { data: { name: "projekt", tytul: "projekt", abc: tekst, link: "projekty" } });
   // context.response.redirect('/status')
 })
+router.get("/osoby", async (ctx) => {
+
+  ctx.render("./osoby.ejs", { data: { name: "osoby", tytul: "osoby" }, osoba: await Osoba.all() });
+});
+router.post('/osobypost', async ctx => {
+  const body = await ctx.request.body({ type: 'form-data' })
+  const data = await body.value.read()
+
+  let tekst = 'błąd';
+  console.log(data)
+
+  if (typeof data.fields['idosoba'] === 'undefined' && typeof data.fields['imie'] == 'string'&& typeof data.fields['nazwisko'] == 'string'&& typeof data.fields['pesel'] == 'string'&& typeof data.fields['telefon'] == 'string') {
+    tekst = ""
+    try {
+      await Osoba.create({ imie: data.fields['imie'] ,nazwisko: data.fields['nazwisko'] ,pesel: data.fields['pesel'] ,telefon: data.fields['telefon'] ,},)
+    } catch (error) {
+      console.log(error)
+      tekst = "Nie "
+    }
+
+    tekst = tekst + "dodano " + data.fields['imie']+" "+ data.fields['nazwisko']+" "+ data.fields['pesel']+" "+ data.fields['telefon']
+    console.log("dodajemy" + data.fields['nazwa_rodzaj'])
+  } else if (typeof data.fields['zapisz'] != 'undefined'&&typeof data.fields['idosoba'] !== 'undefined' && typeof data.fields['imie'] == 'string'&& typeof data.fields['nazwisko'] == 'string'&& typeof data.fields['pesel'] == 'string'&& typeof data.fields['telefon'] == 'string') {
+    tekst = ""
+    try {
+      await Osoba.where({ idosoba: data.fields['idosoba'] }).update({ imie: data.fields['imie'] ,nazwisko: data.fields['nazwisko'] ,pesel: data.fields['pesel'] ,telefon: data.fields['telefon'] ,},)
+
+    } catch (error) {
+      console.log(error)
+      tekst = "Nie "
+    }
+
+    tekst = tekst + " zmieniono na "  + data.fields['imie']+" "+ data.fields['nazwisko']+" "+ data.fields['pesel']+" "+ data.fields['telefon']
+
+  } else if (typeof data.fields['usun'] != 'undefined'&&typeof data.fields['idosoba'] !== 'undefined') {
+    tekst = ""
+    try {
+      await Osoba.deleteById(data.fields['idosoba'])
+    } catch (error) {
+      console.log(error)
+      tekst = "Nie "
+    }
+
+
+    tekst = tekst + " usuniento " + data.fields['imie']+" "+ data.fields['nazwisko']+" "+ data.fields['pesel']+" "+ data.fields['telefon']
+  }
+
+  ctx.render("./info.ejs", { data: { name: "osoby", tytul: "osoby", abc: tekst, link: "osoby" } });
+  // context.response.redirect('/rodzaje')
+})
+router.get("/magazyn_sor", async (ctx) => {
+console.log(await Magazyn_sor.all())
+  ctx.render("./magazyn_sor.ejs", { data: { name: "magazyn_sor", tytul: "magazyn_sor" }, Magazyn_sor: await Magazyn_sor.all(), osoba: await Osoba.all() });
+});
+
+router.post('/Magazyn_sorpost', async ctx => {
+  const body = await ctx.request.body({ type: 'form-data' })
+  const data = await body.value.read()
+
+  let tekst = 'błąd';
+  console.log(data)
+ if (typeof data.fields['idmagazyn_sor'] === 'undefined' && typeof data.fields['powierzchnia'] == 'string'&& typeof data.fields['lokalizacja_gps_msor'] == 'string'&& typeof data.fields['osoba_idosoba'] == 'string'&& typeof data.fields['nazwa_magazyn_sor'] == 'string') {
+    tekst = ""
+    try {
+      await Magazyn_sor.create({ powierzchnia: data.fields['powierzchnia'] ,lokalizacja_gps_msor: data.fields['lokalizacja_gps_msor'] ,osoba_idosoba: data.fields['osoba_idosoba'] ,nazwa_magazyn_sor: data.fields['nazwa_magazyn_sor'] ,},)
+    } catch (error) {
+      console.log(error)
+      tekst = "Nie "
+    }
+
+     tekst = tekst + "dodano " + data.fields['powierzchnia']+" "+ data.fields['lokalizacja_gps_msor']+" "+ data.fields['nazwa_magazyn_sor']
+    console.log("dodajemy")
+  } else if (typeof data.fields['zapisz'] != 'undefined'&&typeof data.fields['idmagazyn_sor'] !== 'undefined' && typeof data.fields['powierzchnia'] == 'string'&& typeof data.fields['lokalizacja_gps_msor'] == 'string'&& typeof data.fields['osoba_idosoba'] == 'string'&& typeof data.fields['nazwa_magazyn_sor'] == 'string') {
+    tekst = ""
+    try {
+      await Magazyn_sor.where({ idmagazyn_sor: data.fields['idmagazyn_sor'] }).update({ powierzchnia: data.fields['powierzchnia'] ,lokalizacja_gps_msor: data.fields['lokalizacja_gps_msor'] ,osoba_idosoba: data.fields['osoba_idosoba'] ,nazwa_magazyn_sor: data.fields['nazwa_magazyn_sor'] ,},)
+    
+    } catch (error) {
+      console.log(error)
+      tekst = "Nie "
+    }
+
+    tekst = tekst + " zmieniono na "  + data.fields['powierzchnia']+" "+ data.fields['lokalizacja_gps_msor']+" "+ data.fields['nazwa_magazyn_sor']
+
+  } else if (typeof data.fields['usun'] != 'undefined'&&typeof data.fields['idosoba'] !== 'undefined') {
+    tekst = ""
+    try {
+      await Osoba.deleteById(data.fields['idosoba'])
+    } catch (error) {
+      console.log(error)
+      tekst = "Nie "
+    }
+
+
+    tekst = tekst + " usuniento " + data.fields['imie']+" "+ data.fields['nazwisko']+" "+ data.fields['pesel']+" "+ data.fields['telefon']
+  }
+
+  ctx.render("./info.ejs", { data: { name: "magazyn_sor", tytul: "magazyn_sor", abc: tekst, link: "magazyn_sor" } });
+  // context.response.redirect('/rodzaje')
+})
+
+
 app.use(router.routes());
 console.log("http://localhost")
 await app.listen({ port: 80 });

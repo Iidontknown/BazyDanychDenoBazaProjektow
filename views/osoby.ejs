@@ -1,0 +1,55 @@
+<%- include('./heder.ejs',{title:data.tytul}); -%>
+<body>
+      
+
+        <table class="table thead-dark table-striped table-dark">
+        <thead>
+          <tr >
+            <th scope="col" style="width: 350px"></th>
+            <th scope="col">imie</th>
+            <th scope="col">nazwisko</th>
+            <th scope="col">pesel</th>
+            <th scope="col">telefon</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% for(var i=0; i<osoba.length; i++) {%>
+            <tr >
+              <th scope="row">
+                <form  action="/osobypost" method="post" enctype="multipart/form-data">   
+      <input type="submit" name="zapisz" type="button" class="btn btn-success" value="Zapisz zmiane wiersza">
+      <input type="submit" name="usun" type="button" class="btn btn-danger" value="Usuń wiersz">
+                
+      <input type="hidden" name="idosoba" value="<%= osoba[i].idosoba %>">
+              </th>
+              <td ><input class="form-control"  type="text" name="imie" value="<%= osoba[i].imie %>"> </td>
+              <td ><input class="form-control"  type="text" name="nazwisko" value="<%= osoba[i].nazwisko %>"> </td>
+              <td ><input class="form-control"  type="text" name="pesel" value="<%= osoba[i].pesel %>"> </td>
+              <td ><input class="form-control"  type="text" name="telefon" value="<%= osoba[i].telefon %>"> </td>
+
+            </tr>
+          </form> 
+          <% } %>
+          <tr >
+            <th scope="row">
+        <form  action="/osobypost" method="post" enctype="multipart/form-data">     
+    <input type="submit" name="dodaj" class="btn btn-success" value="Dodaj"></button>
+            </th>
+            <td ><input class="form-control"  type="text" name="imie" placeholder="imie" required> </td>
+              <td ><input class="form-control"  type="text" name="nazwisko" placeholder="nazwisko" required> </td>
+              <td ><input class="form-control"  type="text" name="pesel" placeholder="pesel" required> </td>
+              <td ><input class="form-control"  type="text" name="telefon" placeholder="telefon" required> </td>
+
+          </form> 
+          </tr>
+          
+        </tbody>
+      </table>
+
+
+
+
+
+    </body>
+
+    <%- include('./footer.ejs'); -%>

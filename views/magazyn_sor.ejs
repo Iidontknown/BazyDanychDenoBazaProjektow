@@ -1,0 +1,63 @@
+<%- include('./heder.ejs',{title:data.tytul}); -%>
+<body>
+      
+
+        <table class="table thead-dark table-striped table-dark">
+        <thead>
+          <tr >
+            <th scope="col" style="width: 350px"></th>
+            <th scope="col">powierzchnia</th>
+            <th scope="col">lokalizacjaGpsMSor</th>
+            <th scope="col">osoba</th>
+            <th scope="col">nazwaMagazynSor</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% for(var i=0; i<Magazyn_sor.length; i++) {%>
+            <tr >
+              <th scope="row">
+                <form  action="/Magazyn_sorpost" method="post" enctype="multipart/form-data">   
+      <input type="submit" name="zapisz" type="button" class="btn btn-success" value="Zapisz zmiane wiersza">
+      <input type="submit" name="usun" type="button" class="btn btn-danger" value="Usuń wiersz">
+                
+      <input type="hidden" name="idmagazyn_sor" value="<%= Magazyn_sor[i].idmagazyn_sor %>">
+              </th>
+              <td ><input class="form-control" min="1"  type="number" name="powierzchnia" value="<%= Magazyn_sor[i].powierzchnia %>"> </td>
+              <td ><input class="form-control"  type="text" name="lokalizacja_gps_msor" value="<%= Magazyn_sor[i].lokalizacjaGpsMSor %>"> </td>
+              <td ><select name="osoba_idosoba" class="form-select">
+                <% for(let r=0; r<osoba.length; r++) {%>
+                <option <% if (osoba[r].idosoba==Magazyn_sor[i].osobaIdosoba) { %> selected <% } %>
+                    value="<%= osoba[r].idosoba %>"><%= osoba[r].imie %> <%= osoba[r].imie %> <%= osoba[r].pesel %></option>
+                <% } %>
+              </select>  </td>
+              <td ><input class="form-control"  type="text" name="nazwa_magazyn_sor" value="<%= Magazyn_sor[i].nazwaMagazynSor %>"> </td>
+
+            </tr>
+          </form> 
+          <% } %>
+          <tr >
+            <th scope="row">
+        <form  action="/Magazyn_sorpost" method="post" enctype="multipart/form-data">     
+    <input type="submit" name="dodaj" class="btn btn-success" value="Dodaj"></button>
+            </th>
+            <td ><input class="form-control" min="1"  type="number" name="powierzchnia"  placeholder="" required> </td>
+            <td ><input class="form-control"  type="text" name="lokalizacja_gps_msor" placeholder="" required> </td>
+            <td ><select name="osoba_idosoba" class="form-select" required>
+              <% for(let r=0; r<osoba.length; r++) {%>
+              <option value="<%= osoba[r].idosoba %>"><%= osoba[r].imie %> <%= osoba[r].imie %> <%= osoba[r].pesel %></option>
+              <% } %>
+            </select>  </td>
+            <td ><input class="form-control"  type="text" name="nazwa_magazyn_sor" placeholder="" required> </td>
+          </form> 
+          </tr>
+          
+        </tbody>
+      </table>
+
+
+
+
+
+    </body>
+
+    <%- include('./footer.ejs'); -%>
