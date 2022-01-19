@@ -1,0 +1,46 @@
+<%- include('./heder.ejs',{title:data.tytul}); -%>
+<body>
+      
+
+        <table class="table thead-dark table-striped table-dark">
+        <thead>
+          <tr >
+            <th scope="col" style="width: 350px"></th>
+            <th scope="col">przyczyna_wartosc</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% for(var i=0; i<przyczyna.length; i++) {%>
+            <tr >
+              <th scope="row">
+                <form  action="/przyczynapost" method="post" enctype="multipart/form-data">   
+      <input type="submit" name="zapisz" type="button" class="btn btn-success" value="Zapisz zmiane wiersza">
+      <input type="submit" name="usun" type="button" class="btn btn-danger" value="Usuń wiersz">
+                
+      <input type="hidden" name="idprzyczyna" value="<%= przyczyna[i].idprzyczyna %>">
+              </th>
+              <td ><input class="form-control"  type="text"  name="przyczyna_wartosc" value="<%= przyczyna[i].przyczyna_wartosc %>"> </td>
+
+            </tr>
+          </form> 
+          <% } %>
+          <tr >
+            <th scope="row">
+        <form  action="/przyczynapost" method="post" enctype="multipart/form-data">     
+    <input type="submit" name="dodaj" class="btn btn-success" value="Dodaj"></button>
+            </th>
+            <td ><input class="form-control"  type="text" name="przyczyna_wartosc" placeholder="przyczyna_wartosc pola" required> </td>
+            
+          </form> 
+          </tr>
+          
+        </tbody>
+      </table>
+
+
+
+
+
+    </body>
+
+    <%- include('./footer.ejs'); -%>

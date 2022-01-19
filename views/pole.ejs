@@ -1,0 +1,49 @@
+<%- include('./heder.ejs',{title:data.tytul}); -%>
+<body>
+      
+
+        <table class="table thead-dark table-striped table-dark">
+        <thead>
+          <tr >
+            <th scope="col" style="width: 350px"></th>
+            <th scope="col">numer_pola</th>
+            <th scope="col">powierzchnia</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% for(var i=0; i<pole.length; i++) {%>
+            <tr >
+              <th scope="row">
+                <form  action="/polepost" method="post" enctype="multipart/form-data">   
+      <input type="submit" name="zapisz" type="button" class="btn btn-success" value="Zapisz zmiane wiersza">
+      <input type="submit" name="usun" type="button" class="btn btn-danger" value="Usuń wiersz">
+                
+      <input type="hidden" name="idpole" value="<%= pole[i].idpole %>">
+              </th>
+              <td ><input class="form-control"  type="text" name="numer_pola" value="<%= pole[i].numer_pola %>"> </td>
+              <td ><input class="form-control"  type="number" min="1" step="0.01" name="powierzchnia" value="<%= pole[i].powierzchnia %>"> </td>
+
+            </tr>
+          </form> 
+          <% } %>
+          <tr >
+            <th scope="row">
+        <form  action="/polepost" method="post" enctype="multipart/form-data">     
+    <input type="submit" name="dodaj" class="btn btn-success" value="Dodaj"></button>
+            </th>
+            <td ><input class="form-control"  type="text" name="numer_pola" placeholder="numer pola" required> </td>
+              <td ><input class="form-control"  type="number" min="1" step="0.01" name="powierzchnia" placeholder="powierzchnia" required> </td>
+
+          </form> 
+          </tr>
+          
+        </tbody>
+      </table>
+
+
+
+
+
+    </body>
+
+    <%- include('./footer.ejs'); -%>

@@ -1,0 +1,49 @@
+<%- include('./heder.ejs',{title:data.tytul}); -%>
+<body>
+      
+
+        <table class="table thead-dark table-striped table-dark">
+        <thead>
+          <tr >
+            <th scope="col" style="width: 350px"></th>
+            <th scope="col">nazwa_srodek</th>
+            <th scope="col">opis</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% for(var i=0; i<srodek.length; i++) {%>
+            <tr >
+              <th scope="row">
+                <form  action="/srodekpost" method="post" enctype="multipart/form-data">   
+      <input type="submit" name="zapisz" type="button" class="btn btn-success" value="Zapisz zmiane wiersza">
+      <input type="submit" name="usun" type="button" class="btn btn-danger" value="Usuń wiersz">
+                
+      <input type="hidden" name="idsrodek" value="<%= srodek[i].idsrodek %>">
+              </th>
+              <td ><input class="form-control"  type="text" name="nazwa_srodek" value="<%= srodek[i].nazwa_srodek %>"> </td>
+              <td ><input class="form-control"  type="text" name="opis" value="<%= srodek[i].opis %>"> </td>
+
+            </tr>
+          </form> 
+          <% } %>
+          <tr >
+            <th scope="row">
+        <form  action="/srodekpost" method="post" enctype="multipart/form-data">     
+    <input type="submit" name="dodaj" class="btn btn-success" value="Dodaj"></button>
+            </th>
+            <td ><input class="form-control"  type="text" name="nazwa_srodek" placeholder="nazwa_srodek pola" required> </td>
+              <td ><input class="form-control"  type="text" name="opis" placeholder="opis" required> </td>
+
+          </form> 
+          </tr>
+          
+        </tbody>
+      </table>
+
+
+
+
+
+    </body>
+
+    <%- include('./footer.ejs'); -%>
