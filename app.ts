@@ -854,9 +854,16 @@ router.post("/srodekpost", async (ctx) => {
 
 router.get("/ezor", async (ctx) => {
   console.log(await Ezor.all())
-  ctx.render("./srodek.ejs", {
-    data: { name: "srodek", tytul: "srodek" },
+  ctx.render("./ezor.ejs", {
+    data: { name: "ezor", tytul: "ezor" ,},
+    ezor: await Ezor.all(), 
+    przyczyna: await Przyczyna.all(),
+    warunki_atmosferyczne: await Warunki_atmosferyczne.all(),
+    pole: await Pole.all(),
     srodek: await Srodek.all(),
+    osoba : await  Osoba.all(),
+    magazyn_sor: await Magazyn_sor.all()
+
   });
 });
 router.post("/ezorpost", async (ctx) => {
@@ -866,61 +873,96 @@ router.post("/ezorpost", async (ctx) => {
   let tekst = "błąd";
   console.log(data);
   if (
-    typeof data.fields["idsrodek"] === "undefined" &&
-    typeof data.fields["nazwa_srodek"] == "string" &&
-    typeof data.fields["opis"] == "string"
+    typeof data.fields["idezor"] === "undefined" &&
+    typeof data.fields["dawka"] == "string" &&
+    typeof data.fields["procent_pola_zabieg"] == "string"&&
+    typeof data.fields["data_zabiegu"] == "string"&&
+    typeof data.fields["uwagi"] == "string"&&
+    typeof data.fields["przyczynaIdprzyczyna"] == "string"&&
+    typeof data.fields["warunkiAtmosferyczneIdwarunkiAtmosferyczne"] == "string"&&
+    typeof data.fields["poleIdpole"] == "string"&&
+    typeof data.fields["srodekIdsrodek"] == "string"&&
+    typeof data.fields["osoba_idosoba"] == "string"&&
+    typeof data.fields["magazynSorIdmagazynSor"] == "string"
   ) {
     tekst = "";
     try {
-      await Srodek.create({
-        nazwa_srodek: data.fields["nazwa_srodek"],
-        opis: data.fields["opis"],
+      await Ezor.create({
+        dawka: data.fields["dawka"],
+        procent_pola_zabieg: data.fields["procent_pola_zabieg"],
+        data_zabiegu: data.fields["data_zabiegu"],
+        uwagi: data.fields["uwagi"],
+        przyczyna_idprzyczyna: data.fields["przyczynaIdprzyczyna"],
+        warunki_atmosferyczne_idwarunki_atmosferyczne: data.fields["warunkiAtmosferyczneIdwarunkiAtmosferyczne"],
+        pole_idpole: data.fields["poleIdpole"],
+        srodek_idsrodek: data.fields["srodekIdsrodek"],
+        osoba_idosoba: data.fields["osoba_idosoba"],
+        magazyn_sor_idmagazyn_sor: data.fields["magazynSorIdmagazynSor"],
       });
     } catch (error) {
       console.log(error);
       tekst = "Nie ";
     }
 
-    tekst = tekst + "dodano " + data.fields["nazwa_srodek"] + " " +
-      data.fields["opis"];
+    tekst = tekst + "dodano " + data.fields["dawka"] + " " +
+    data.fields["data_zabiegu"]+ " " +
+    data.fields["uwagi"]
     console.log("dodajemy");
   } else if (
     typeof data.fields["zapisz"] != "undefined" &&
-    typeof data.fields["idsrodek"] !== "undefined" &&
-    typeof data.fields["nazwa_srodek"] == "string" &&
-    typeof data.fields["opis"] == "string"
+    typeof data.fields["idezor"] !== "undefined" &&
+    typeof data.fields["dawka"] == "string" &&
+    typeof data.fields["procent_pola_zabieg"] == "string"&&
+    typeof data.fields["data_zabiegu"] == "string"&&
+    typeof data.fields["uwagi"] == "string"&&
+    typeof data.fields["przyczynaIdprzyczyna"] == "string"&&
+    typeof data.fields["warunkiAtmosferyczneIdwarunkiAtmosferyczne"] == "string"&&
+    typeof data.fields["poleIdpole"] == "string"&&
+    typeof data.fields["srodekIdsrodek"] == "string"&&
+    typeof data.fields["osoba_idosoba"] == "string"&&
+    typeof data.fields["magazynSorIdmagazynSor"] == "string"
   ) {
     tekst = "";
     try {
-      await Srodek.where({ idsrodek: data.fields["idsrodek"] }).update({
-        nazwa_srodek: data.fields["nazwa_srodek"],
-        opis: data.fields["opis"],
+      await Ezor.where({ idezor: data.fields["idezor"] }).update({
+        dawka: data.fields["dawka"],
+        procent_pola_zabieg: data.fields["procent_pola_zabieg"],
+        data_zabiegu: data.fields["data_zabiegu"],
+        uwagi: data.fields["uwagi"],
+        przyczyna_idprzyczyna: data.fields["przyczynaIdprzyczyna"],
+        warunki_atmosferyczne_idwarunki_atmosferyczne: data.fields["warunkiAtmosferyczneIdwarunkiAtmosferyczne"],
+        pole_idpole: data.fields["poleIdpole"],
+        srodek_idsrodek: data.fields["srodekIdsrodek"],
+        osoba_idosoba: data.fields["osoba_idosoba"],
+        magazyn_sor_idmagazyn_sor: data.fields["magazynSorIdmagazynSor"],
       });
     } catch (error) {
       console.log(error);
       tekst = "Nie ";
     }
 
-    tekst = tekst + " zmieniono na " + data.fields["nazwa_srodek"] + " " +
-    data.fields["opis"];
+    tekst = tekst + " zmieniono na " + data.fields["dawka"] + " " +
+    data.fields["data_zabiegu"]+ " " +
+    data.fields["uwagi"]
   } else if (
     typeof data.fields["usun"] != "undefined" &&
-    typeof data.fields["idsrodek"] !== "undefined"
+    typeof data.fields["idezor"] !== "undefined"
   ) {
     tekst = "";
     try {
-      await Srodek.deleteById(data.fields["idsrodek"]);
+      await Ezor.deleteById(data.fields["idezor"]);
     } catch (error) {
       console.log(error);
       tekst = "Nie ";
     }
 
-    tekst = tekst + " usuniento " +  data.fields["nazwa_srodek"] + " " +
-    data.fields["opis"];
+    tekst = tekst + " usuniento " + data.fields["dawka"] + " " +
+    data.fields["data_zabiegu"]+ " " +
+    data.fields["uwagi"]
   }
 
   ctx.render("./info.ejs", {
-    data: { name: "srodek", tytul: "srodek", abc: tekst, link: "srodek" },
+    data: { name: "ezor", tytul: "ezor", abc: tekst, link: "ezor" },
   });
   // context.response.redirect('/rodzaje')
 });

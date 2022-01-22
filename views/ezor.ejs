@@ -1,0 +1,136 @@
+<%- include('./heder.ejs',{title:data.tytul}); -%>
+<body>
+
+
+        <table class="table  table-dark">
+        <thead>
+          <tr >
+            <th scope="col" style="width: 350px"></th>
+            <th scope="col">powierzchnia<br> warunki_atmosferyczne</th>
+            <th scope="col">procent_pola_zabieg <br>pole</th>
+            <th scope="col">data_zabiegu <br>srodek</th>
+            <th scope="col">uwagi<br>osoba</th>
+            <th scope="col">przyczyna<br>osoba</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% for(var i=0; i<ezor.length; i++) {%>
+            <tr >
+              <td scope="row" rowspan="2">
+                <form  action="/ezorpost" method="post" enctype="multipart/form-data">   
+      <input type="submit" name="zapisz" type="button" class="btn btn-success" value="Zapisz zmiane wiersza">
+      <input type="submit" name="usun" type="button" class="btn btn-danger" value="Usuń wiersz">
+                
+      <input type="hidden" name="idezor" value="<%= ezor[i].idezor %>">
+              </td>
+              <td ><input class="form-control" min="1"  type="number" name="dawka" value="<%= ezor[i].dawka %>"> </td>
+              <td ><input class="form-control"  type="number" min="0.01" step="0.01" max="100.00" name="procent_pola_zabieg" value="<%= ezor[i].procent_pola_zabieg %>"> </td>
+              <td ><input class="form-control"  type="date" name="data_zabiegu" value="<%= ezor[i].data_zabiegu.toISOString().slice(0, 10) %>"> </td>
+              <td ><input class="form-control"  type="text" name="uwagi" value="<%= ezor[i].uwagi %>"> </td>
+              <td ><select name="przyczynaIdprzyczyna" class="form-select">
+                <% for(let r=0; r<przyczyna.length; r++) {%>
+                <option <% if (przyczyna[r].idprzyczyna==ezor[i].przyczynaIdprzyczyna) { %> selected <% } %>
+                    value="<%= przyczyna[r].idprzyczyna %>"><%= przyczyna[r].przyczyna_wartosc %> </option>
+                <% } %>
+              </select>  </td>
+            </tr>
+            <tr>
+              <td ><select name="warunkiAtmosferyczneIdwarunkiAtmosferyczne" class="form-select">
+                <% for(let r=0; r<warunki_atmosferyczne.length; r++) {%>
+                <option <% if (warunki_atmosferyczne[r].idwarunki_atmosferyczne==ezor[i].warunkiAtmosferyczneIdwarunkiAtmosferyczne) { %> selected <% } %>
+                    value="<%= warunki_atmosferyczne[r].idwarunki_atmosferyczne %>"><%= warunki_atmosferyczne[r].wartosc_w_a %> </option>
+                <% } %>
+              </select>  </td>
+              
+              <td ><select name="poleIdpole" class="form-select">
+                <% for(let r=0; r<pole.length; r++) {%>
+                <option <% if (pole[r].idpole==ezor[i].poleIdpole) { %> selected <% } %>
+                    value="<%= pole[r].idpole %>"><%= pole[r].numer_pola %> <%= pole[r].powierzchnia %>  </option>
+                <% } %>
+              </select>  </td>
+
+              <td ><select name="srodekIdsrodek" class="form-select">
+                <% for(let r=0; r<srodek.length; r++) {%>
+                <option <% if (srodek[r].idsrodek==ezor[i].srodekIdsrodek) { %> selected <% } %>
+                    value="<%= srodek[r].idsrodek %>"><%= srodek[r].nazwa_srodek %></option>
+                <% } %>
+              </select>  </td>
+              <td ><select name="osoba_idosoba" class="form-select">
+                <% for(let r=0; r<osoba.length; r++) {%>
+                <option <% if (osoba[r].idosoba==ezor[i].osobaIdosoba) { %> selected <% } %>
+                    value="<%= osoba[r].idosoba %>"><%= osoba[r].imie %> <%= osoba[r].nazwisko %> <%= osoba[r].pesel %></option>
+                <% } %>
+              </select>  </td>
+              <td ><select name="magazynSorIdmagazynSor" class="form-select">
+                <% for(let r=0; r<magazyn_sor.length; r++) {%>
+                <option <% if (magazyn_sor[r].idmagazyn_sor==ezor[i].magazynSorIdmagazynSor) { %> selected <% } %>
+                    value="<%= magazyn_sor[r].idmagazyn_sor %>"><%= magazyn_sor[r].powierzchnia %>  <%= magazyn_sor[r].nazwaMagazynSor %></option>
+                <% } %>
+              </select>  </td>
+              
+
+            </tr>
+          </form> 
+          <% } %>
+          <tr >
+            <th scope="row" rowspan="2">
+        <form  action="/ezorpost" method="post" enctype="multipart/form-data">     
+    <input type="submit" name="dodaj" class="btn btn-success" value="Dodaj"></button>
+            </th>
+            <td ><input class="form-control" min="1"  type="number" name="dawka" value=""> </td>
+              <td ><input class="form-control"  type="number" min="0.01" step="0.01" max="100.00" name="procent_pola_zabieg" value=""> </td>
+              <td ><input class="form-control"  type="date" name="data_zabiegu" value=""> </td>
+              <td ><input class="form-control"  type="text" name="uwagi" value=""> </td>
+              <td ><select name="przyczynaIdprzyczyna" class="form-select">
+                <% for(let r=0; r<przyczyna.length; r++) {%>
+                <option 
+                    value="<%= przyczyna[r].idprzyczyna %>"><%= przyczyna[r].przyczyna_wartosc %> </option>
+                <% } %>
+              </select>  </td>
+            </tr>
+            <tr>
+              <td ><select name="warunkiAtmosferyczneIdwarunkiAtmosferyczne" class="form-select">
+                <% for(let r=0; r<warunki_atmosferyczne.length; r++) {%>
+                <option 
+                value="<%= warunki_atmosferyczne[r].idwarunki_atmosferyczne %>"><%= warunki_atmosferyczne[r].wartosc_w_a %> </option>
+                <% } %>
+              </select>  </td>
+              
+              <td ><select name="poleIdpole" class="form-select">
+                <% for(let r=0; r<pole.length; r++) {%>
+                <option
+                    value="<%= pole[r].idpole %>"><%= pole[r].numer_pola %> <%= pole[r].powierzchnia %>  </option>
+                <% } %>
+              </select>  </td>
+
+              <td ><select name="srodekIdsrodek" class="form-select">
+                <% for(let r=0; r<srodek.length; r++) {%>
+                <option 
+                    value="<%= srodek[r].idsrodek %>"><%= srodek[r].nazwa_srodek %></option>
+                <% } %>
+              </select>  </td>
+              <td ><select name="osoba_idosoba" class="form-select">
+                <% for(let r=0; r<osoba.length; r++) {%>
+                <option
+                    value="<%= osoba[r].idosoba %>"><%= osoba[r].imie %> <%= osoba[r].nazwisko %> <%= osoba[r].pesel %></option>
+                <% } %>
+              </select>  </td>
+              <td ><select name="magazynSorIdmagazynSor" class="form-select">
+                <% for(let r=0; r<magazyn_sor.length; r++) {%>
+                <option 
+                    value="<%= magazyn_sor[r].idmagazyn_sor %>"><%= magazyn_sor[r].powierzchnia %>  <%= magazyn_sor[r].nazwaMagazynSor %></option>
+                <% } %>
+              </select>  </td>
+          </form> 
+          </tr>
+          
+        </tbody>
+      </table>
+
+
+
+
+
+    </body>
+
+    <%- include('./footer.ejs'); -%>

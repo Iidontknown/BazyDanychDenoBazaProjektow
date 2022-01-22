@@ -27,7 +27,7 @@
               <td ><select name="osoba_idosoba" class="form-select">
                 <% for(let r=0; r<osoba.length; r++) {%>
                 <option <% if (osoba[r].idosoba==Magazyn_sor[i].osobaIdosoba) { %> selected <% } %>
-                    value="<%= osoba[r].idosoba %>"><%= osoba[r].imie %> <%= osoba[r].imie %> <%= osoba[r].pesel %></option>
+                    value="<%= osoba[r].idosoba %>"><%= osoba[r].imie %> <%= osoba[r].nazwisko %> <%= osoba[r].pesel %></option>
                 <% } %>
               </select>  </td>
               <td ><input class="form-control"  type="text" name="nazwa_magazyn_sor" value="<%= Magazyn_sor[i].nazwaMagazynSor %>"> </td>
@@ -44,7 +44,7 @@
             <td ><input class="form-control"  type="text" name="lokalizacja_gps_msor" placeholder="" required> </td>
             <td ><select name="osoba_idosoba" class="form-select" required>
               <% for(let r=0; r<osoba.length; r++) {%>
-              <option value="<%= osoba[r].idosoba %>"><%= osoba[r].imie %> <%= osoba[r].imie %> <%= osoba[r].pesel %></option>
+              <option value="<%= osoba[r].idosoba %>"><%= osoba[r].imie %> <%= osoba[r].nazwisko %> <%= osoba[r].pesel %></option>
               <% } %>
             </select>  </td>
             <td ><input class="form-control"  type="text" name="nazwa_magazyn_sor" placeholder="" required> </td>

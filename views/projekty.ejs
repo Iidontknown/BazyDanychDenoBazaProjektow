@@ -103,8 +103,8 @@
               </select>  </td>
               <td ><select name="status" class="form-select">
                 <% for(let r=0; r<status.length; r++) {%>
-                <option <% if (osoba[r].id_status==projekt[i].statusIdStatus) { %> selected <% } %>
-                    value="<%= status[r].id_status %>"><%= status[r].nazwisko %></option>
+                <option <% if (status[r].id_status==projekt[i].statusIdStatus) { %> selected <% } %>
+                    value="<%= status[r].id_status %>"><%= status[r].nazwa_status %></option>
                 <% } %>
               </select>  </td>
             </tr>
