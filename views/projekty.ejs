@@ -7,7 +7,7 @@
             <option <% if (status[r].id_status==idWyb && rodzajWyb=='S') { %> selected <% } %>
                 value="/projektyS/<%= status[r].id_status %>"><%= status[r].nazwa_status %></option>
             <% } %>
-        </select>
+        </select><hr>
         <select class="form-select" onchange="if (this.value) window.location.href=this.value">
           <option value="/projekty"  <% if ( rodzajWyb!='R') { %> selected <% } %>>wybierz rodzaj do wyszukiwania</option>
           <% for(let r=0; r<rodzaj.length; r++) {%>
@@ -29,8 +29,8 @@
             }
             </script>
         </div>
-        <hr>
-        <div class=" ">
+        <!-- <hr> -->
+        <!-- <div class=" ">
           <input type="date" name="searchIddate1" id="searchIddate1" class=""   <% if ( rodzajWyb=='D') { %> value="<%= idWyb %>" <% } %>>
           <input type="date" name="searchIddate1" id="searchIddate2" class=""   <% if ( rodzajWyb=='D') { %> value="<%= idWyb1 %>" <% } %>>
           <label for="searchId" class="sr-only"><button class="btn btn-info " onclick="szukajData()">szukaj projekt po data rozpoczecia</button></label> 
@@ -58,7 +58,7 @@
              }
             }
             </script>
-        </div>
+        </div> -->
 
      
       </div>
